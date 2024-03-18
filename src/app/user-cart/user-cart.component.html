@@ -1,0 +1,70 @@
+<app-header></app-header>
+<!-- section -->
+<section class="py-5">
+    <div *ngIf="allProducts.length==0" style="height: 90vh;" class="d-flex justify-content-center align-items-center w-100 flex-column">
+        <img class="img-fluid mb-5" src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-2130356-1800917.png" alt="">
+        <h1 class="text-danger">Your Cart is Empty!!!</h1>
+    </div>
+
+    <div *ngIf="allProducts.length!==0" class="container px-4 px-lg-5 mt-5">
+        <h1 class="text-success">Your Cart Items!!!</h1>
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of allProducts; let i= index">
+                            <td>{{i+1}}</td>
+                            <td>{{product.title.slice(0,20)}}...</td>
+                            <td><img width="60px" height="60px" [src]="product.image" alt=""></td>
+                            <td>
+                                <div class="d-flex">
+                                    <button (click)="decrementQuantity(product._id)" class="btn fw-bolder">-</button>
+                                    <input style="width: 60px;" [value]="product.quantity" type="text" class="form-control" readonly>
+                                    <button (click)="incrementQuantity(product._id)" class="btn fw-bolder">+</button>
+                                </div>
+                            </td>
+                            <td>{{product.totalPrice}}</td>
+                            <td><button (click)="removeCartItem(product._id)" class="btn"><i class="fa-solid fa-trash text-danger"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="float-end mt-5">
+                    <button (click)="emptyCart()" class="btn btn-danger">EMPYT CART</button>
+                    <button routerLink="" class="btn btn-primary ms-3">SHOP MORE</button>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="border rounded p-3">
+                    <h3>Total: <span class="text-warning"> $ {{cartTotalPrice}} </span></h3>
+                    <h6 *ngIf="!copounStatus" (click)="getCopoun()" class="mt-3">Click her to view <span class="btn btn-link"><i class="fa-solid fa-tag"></i> Offers</span></h6>
+                    <!-- gift copouns -->
+                    <div *ngIf="copounStatus" class="d-flex justify-content-evenly mt-3">
+                        <ng-container *ngIf="cartTotalPrice>=100 && cartTotalPrice<=250 && !copounClickStatus" >
+                            <img (click)="discount10()" width="150px" height="100px" src="https://newyorkconventionprinting.com/wp-content/uploads/2015/03/10off.png" alt="">
+                        </ng-container>
+                        <ng-container *ngIf="cartTotalPrice>=250 && cartTotalPrice<=500 && !copounClickStatus" >
+                            <img (click)="discount30()" width="150px" height="100px" src="https://velocitize.com/wp-content/uploads/2022/06/discount-2789868_1280.png" alt="">
+                        </ng-container>
+                        <ng-container *ngIf="cartTotalPrice>500 && !copounClickStatus" >
+                            <img (click)="dicount50()" width="150px" height="100px" src="https://png.pngtree.com/png-clipart/20211116/original/pngtree-yellow-discount-coupon-tickets-card-editable-template-png-image_6940124.png" alt="">
+                        </ng-container>
+                    </div>
+                    <hr class="mt-5">
+                    <div class="d-grid">
+                        <button (click)="checkout()" class="btn btn-success">Check Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
